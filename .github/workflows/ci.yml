@@ -1,0 +1,118 @@
+name: CI
+on: [pull_request]
+
+env:
+  CARGO_TERM_COLOR: always # Force Cargo to use colors
+  TERM: xterm-256color
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ matrix.build }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ matrix.build }}-cargo-
+
+      - name: Install Rust
+        run: |
+          rustup show
+          rustup component add rustfmt
+          rustup component add clippy
+          rustup toolchain install nightly
+
+      - name: Check Format
+        run: cargo fmt --all -- --check
+
+      - name: Clippy
+        run: cargo clippy --tests --benches -- -D clippy::all
+
+      - name: Test
+        run: cargo test -- --color always
+        env:
+          RUST_BACKTRACE: 1
+
+  benchmark:
+    runs-on: macos-latest
+    needs: [build]
+    strategy:
+      matrix:
+        name:
+          - my_binary_heap
+        include:
+          - name: my_binary_heap
+            project_dir: ./benchmarks/my_binary_heap
+
+    env:
+      PROJECT_DIR: ${{ matrix.project_dir }}
+
+    steps:
+      - name: Checkout current PR
+        uses: actions/checkout@v4
+
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _canbench_main_branch
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-1
+
+      - name: Install Rust
+        run: |
+          rustup show
+          rustup target add wasm32-unknown-unknown
+
+      - name: Benchmark
+        run: |
+          bash ./scripts/ci_run_benchmark.sh $PROJECT_DIR ${{ matrix.name }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: canbench_result_${{ matrix.name }}
+          path: /tmp/canbench_result_${{ matrix.name }}
+
+      - name: Pass or fail
+        run: |
+          bash ./scripts/ci_post_run_benchmark.sh
+
+  upload-pr-number:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Save PR number
+        run: |
+          echo ${{ github.event.number }} > /tmp/pr_number
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr_number
+          path: /tmp/pr_number
+
+  checks-pass:
+    # Always run this job!
+    if: always()
+    needs:
+      - benchmark
+    runs-on: macos-latest
+    steps:
+      - name: check benchmark result
+        if: ${{ needs.benchmark.result != 'success' }}
+        run: exit 1
