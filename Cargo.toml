@@ -18,7 +18,7 @@ bench_scope = ["dep:canbench-rs"]
 members = ["benchmarks"]
 
 [workspace.dependencies]
-canbench-rs = "0.1.11"
+canbench-rs = "0.2.0"
 candid = "0.10.14"
 ic-cdk = "0.17.2"
 ic-cdk-macros = "0.17.2"
