@@ -22,14 +22,16 @@ It’s designed to help you:
 
 ## Why canbench 0.2.0?
 
-[`canbench`](https://github.com/dfinity/canbench) is a benchmarking tool for Internet Computer (IC) projects.
+[`canbench`](https://github.com/dfinity/canbench) is a benchmarking tool for Internet Computer (IC) canisters.
 
 Version **0.2.0** introduces major improvements:
 
-- 🧼 **Cleaner output**: optional line-by-line results, now much easier to scan
+- 🧹 **Cleaner output**: optional individual streaming results, now much easier to scan
 - 📊 **Concise summary**: regressions, improvements, unchanged, new benchmarks
+- 🧾 **Significant changes table**: highlights top 50 performance changes
 - 📥 **CSV output**: export full results to a file, also uploaded in CI
-- 🔍 **New `calls` field**: tracks how many times a scope runs (useful for recursion)
+- 🔁 **New `calls` field**: tracks how many times a scope runs (useful for recursion)
+- 🕒 **Commit & timestamp**: each report includes commit hash and time, so you know how fresh the data is
 
 📢 **Full announcement**:  
 ➡️ [Canbench 0.2.0 Released — Improved Output, CI Integration, and a Breaking Change](https://forum.dfinity.org/t/canbench-0-2-0-released-improved-output-ci-integration-and-a-breaking-change/50511)
