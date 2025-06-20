@@ -48,6 +48,8 @@ cd canbench-0.2.0-demo
 
 cargo test
 
+cargo install --version 0.2.0 --locked canbench
+
 cd benchmarks/my_binary_heap
 canbench --hide-results --show-summary --csv
 ```
