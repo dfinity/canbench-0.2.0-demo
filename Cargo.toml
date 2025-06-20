@@ -1,0 +1,24 @@
+[package]
+name = "canbench-demo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+canbench-rs = { workspace = true, optional = true } # Optional to benchmark parts of the code.
+ic-cdk-macros.workspace = true
+ic-cdk.workspace = true
+
+[dev-dependencies]
+canbench-rs.workspace = true
+
+[features]
+bench_scope = ["dep:canbench-rs"]
+
+[workspace]
+members = ["benchmarks"]
+
+[workspace.dependencies]
+canbench-rs = "0.1.11"
+candid = "0.10.14"
+ic-cdk = "0.17.2"
+ic-cdk-macros = "0.17.2"

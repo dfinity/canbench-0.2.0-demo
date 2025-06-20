@@ -1,0 +1,16 @@
+[package]
+name = "benchmarks"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+canbench-rs.workspace = true
+candid.workspace = true
+ic-cdk-macros.workspace = true
+ic-cdk.workspace = true
+tiny-rng = "0.3.0"
+canbench-demo = { path = "../", features = ["bench_scope"] }
+
+[[bin]]
+name = "my_binary_heap"
+path = "my_binary_heap/src/main.rs"
