@@ -5,26 +5,26 @@ pub struct MyBinaryHeap<T: Ord> {
 
 impl<T: Ord> MyBinaryHeap<T> {
     pub fn new() -> Self {
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
         Self { data: Vec::new() }
     }
 
     pub fn with_capacity(cap: usize) -> Self {
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
         Self {
             data: Vec::with_capacity(cap),
         }
     }
 
     pub fn push(&mut self, value: T) {
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
         self.data.push(value);
         let idx = self.data.len() - 1;
         self.sift_up_recursive(idx);
     }
 
     pub fn pop(&mut self) -> Option<T> {
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
         let len = self.data.len();
         if len == 0 {
             return None;
@@ -36,17 +36,17 @@ impl<T: Ord> MyBinaryHeap<T> {
     }
 
     pub fn peek(&self) -> Option<&T> {
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
         self.data.first()
     }
 
     pub fn is_empty(&self) -> bool {
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
         self.data.is_empty()
     }
 
     pub fn len(&self) -> usize {
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
         self.data.len()
     }
 
@@ -54,7 +54,7 @@ impl<T: Ord> MyBinaryHeap<T> {
         #[cfg(feature = "bench_scope")]
         let _p = canbench_rs::bench_scope("sift_up");
 
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
 
         if idx == 0 {
             return;
@@ -70,7 +70,7 @@ impl<T: Ord> MyBinaryHeap<T> {
         #[cfg(feature = "bench_scope")]
         let _p = canbench_rs::bench_scope("sift_down");
 
-        wait_for_instructions(1_000);
+        wait_for_instructions(10_000);
 
         let len = self.data.len();
         let left = 2 * idx + 1;
