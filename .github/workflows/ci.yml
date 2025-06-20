@@ -120,6 +120,7 @@ jobs:
     # Always run this job!
     if: always()
     needs:
+      - build
       - benchmark
     runs-on: macos-latest
     steps:
